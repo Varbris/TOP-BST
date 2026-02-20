@@ -11,7 +11,7 @@ class Tree {
   }
 
   buildTree(arr) {
-    var myArr = this.mergeSort(arr);
+    var myArr = this.removeDuplicate(this.mergeSort(arr));
     console.log(myArr);
   }
 
@@ -51,6 +51,17 @@ class Tree {
     var arrRight = arr.slice(middle);
 
     return this.merge(this.mergeSort(arrLeft), this.mergeSort(arrRight));
+  }
+
+  removeDuplicate(arr) {
+    const result = new Array();
+    arr.forEach((element) => {
+      if (!result.includes(element, 0)) {
+        result.push(element);
+      }
+    });
+
+    return result;
   }
 }
 
