@@ -1,18 +1,30 @@
 class Node {
   constructor(value, nextNode = null) {
-    this.value = value;
-    this.nextNode = nextNode;
+    this.data = value;
+    this.left;
+    this.right;
   }
 }
 
 class Tree {
   constructor(myArr) {
-    this.root = this.buildTree(myArr);
+    const arr = this.removeDuplicate(this.mergeSort(myArr));
+    this.root = this.buildTree(arr, 0, myArr.length - 1);
   }
 
-  buildTree(arr) {
-    var myArr = this.removeDuplicate(this.mergeSort(arr));
-    console.log(myArr);
+  buildTree(arr, start, end) {
+    if (start > end) return null;
+
+    let mid = start + Math.floor((end - start) / 2);
+    if (mid > arr.length - 1) {
+      return;
+    }
+    let root = new Node(arr[mid]);
+
+    root.left = this.buildTree(arr, start, mid - 1);
+    root.right = this.buildTree(arr, mid + 1, end);
+
+    return root;
   }
 
   merge(leftArr, rightArr) {
@@ -60,7 +72,7 @@ class Tree {
         result.push(element);
       }
     });
-
+    console.log(result);
     return result;
   }
 }
@@ -68,3 +80,4 @@ class Tree {
 const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 const myTree = new Tree(arr);
+myTree.prettyPrint(myTree.root);
