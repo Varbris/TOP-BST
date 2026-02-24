@@ -87,9 +87,37 @@ class Tree {
     console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
     this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
   }
+
+  preOrderDfs(node, value, callBack) {
+    if (node === null || node === undefined) {
+      return;
+    }
+    if (callBack(node, value)) {
+      return true;
+    }
+    var left = this.preOrderDfs(node.left, value, callBack);
+    var right = this.preOrderDfs(node.right, value, callBack);
+
+    if (left || right) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  includes(value) {
+    var check = this.preOrderDfs(this.root, value, function (node, value) {
+      if (node.data === value) {
+        return true;
+      }
+    });
+
+    return check;
+  }
 }
 
 const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 const myTree = new Tree(arr);
 myTree.prettyPrint(myTree.root);
+console.log(myTree.includes(1));
