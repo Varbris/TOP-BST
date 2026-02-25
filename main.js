@@ -88,30 +88,19 @@ class Tree {
     this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
   }
 
-  preOrderDfs(node, value, callBack) {
-    if (node === null || node === undefined) {
+  includes(value, node = this.root) {
+    if (node === null) {
       return;
     }
-    if (callBack(node, value)) {
+    if (this.includes(value, node.left)) {
       return true;
-    }
-    var left = this.preOrderDfs(node.left, value, callBack);
-    var right = this.preOrderDfs(node.right, value, callBack);
-
-    if (left || right) {
+    } else if (this.includes(value, node.right)) {
+      return true;
+    } else if (node.data === value) {
       return true;
     } else {
       return false;
     }
-  }
-
-  includes(value) {
-    var check = this.preOrderDfs(this.root, value, function (node, value) {
-      if (node.data === value) {
-        return true;
-      }
-    });
-    return check;
   }
 
   insert(value, node = this.root) {
@@ -133,6 +122,17 @@ const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 const myTree = new Tree(arr);
 myTree.prettyPrint(myTree.root);
-// console.log(myTree.includes(1));
-myTree.insert(6);
-myTree.prettyPrint(myTree.root);
+console.log(myTree.includes(1));
+console.log(myTree.includes(3));
+console.log(myTree.includes(4));
+console.log(myTree.includes(5));
+console.log(myTree.includes(7));
+console.log(myTree.includes(8));
+console.log(myTree.includes(9));
+console.log(myTree.includes(23));
+console.log(myTree.includes(67));
+console.log(myTree.includes(324));
+console.log(myTree.includes(6345));
+console.log(myTree.includes(10));
+// myTree.insert(6);
+// myTree.prettyPrint(myTree.root);
