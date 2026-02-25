@@ -111,8 +111,21 @@ class Tree {
         return true;
       }
     });
-
     return check;
+  }
+
+  insert(value, node = this.root) {
+    if (node === null) {
+      return new Node(value);
+    }
+
+    if (value < node.data) {
+      node.left = this.insert(value, node.left);
+    } else {
+      node.right = this.insert(value, node.right);
+    }
+
+    return node;
   }
 }
 
@@ -120,4 +133,6 @@ const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 const myTree = new Tree(arr);
 myTree.prettyPrint(myTree.root);
-console.log(myTree.includes(1));
+// console.log(myTree.includes(1));
+myTree.insert(6);
+myTree.prettyPrint(myTree.root);
