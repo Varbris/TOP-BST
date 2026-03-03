@@ -8,8 +8,11 @@ class Node {
 
 class Tree {
   constructor(myArr) {
-    const arr = this.removeDuplicate(this.mergeSort(myArr));
-    this.root = this.buildTree(arr, 0, myArr.length - 1);
+    this.root = this.buildTree(
+      this.removeDuplicate(this.mergeSort(myArr)),
+      0,
+      myArr.length - 1
+    );
   }
 
   buildTree(arr, start, end) {
@@ -116,23 +119,52 @@ class Tree {
 
     return node;
   }
+
+  deleteItem(value, node = this.root) {
+    if (node === null) {
+      return;
+    }
+
+    if (node.data === value) {
+      if (node.left === null && node.right === null) {
+        node = null;
+        return node;
+      } else if (node.left === null || node.right === null) {
+        var temp = node.left !== null ? node.left : node.right;
+        node = null;
+        node = temp;
+        return node;
+      } else {
+        var curNode = node;
+        var getLow, temp;
+        while (curNode !== null) {
+          if (curNode.data < value) {
+            getLow = curNode;
+          }
+          curNode = curNode.left;
+        }
+        temp = node;
+        node.data = getLow.data;
+        node.left = this.deleteItem(node.data, node.left);
+      }
+    }
+
+    if (value < node.data) {
+      node.left = this.deleteItem(value, node.left);
+    } else {
+      node.right = this.deleteItem(value, node.right);
+    }
+
+    return node;
+  }
 }
 
 const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 const myTree = new Tree(arr);
 myTree.prettyPrint(myTree.root);
-console.log(myTree.includes(1));
-console.log(myTree.includes(3));
-console.log(myTree.includes(4));
-console.log(myTree.includes(5));
-console.log(myTree.includes(7));
-console.log(myTree.includes(8));
-console.log(myTree.includes(9));
-console.log(myTree.includes(23));
-console.log(myTree.includes(67));
-console.log(myTree.includes(324));
-console.log(myTree.includes(6345));
-console.log(myTree.includes(10));
+// console.log(myTree.includes(1));
 // myTree.insert(6);
 // myTree.prettyPrint(myTree.root);
+myTree.deleteItem(4);
+myTree.prettyPrint(myTree.root);
