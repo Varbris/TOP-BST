@@ -125,7 +125,11 @@ class Tree {
       return;
     }
 
-    if (node.data === value) {
+    if (value < node.data) {
+      node.left = this.deleteItem(value, node.left);
+    } else if (value > node.data) {
+      node.right = this.deleteItem(value, node.right);
+    } else if (node.data === value) {
       if (node.left === null && node.right === null) {
         node = null;
         return node;
@@ -135,60 +139,49 @@ class Tree {
         node = temp;
         return node;
       } else {
-        var curNode = node;
-        var getLow, temp;
-        while (curNode !== null) {
-          if (curNode.data < value) {
-            getLow = curNode;
-          }
+        var curNode = node.right;
+        var successor;
+        while (curNode !== null && curNode.left !== null) {
           curNode = curNode.left;
+          successor = curNode;
         }
-        temp = node;
-        node.data = getLow.data;
-        node.left = this.deleteItem(node.data, node.left);
+        var temp = node;
+        node.data = successor.data;
+        node.right = this.deleteItem(successor.data, node.right);
       }
-    }
-
-    if (value < node.data) {
-      node.left = this.deleteItem(value, node.left);
-    } else {
-      node.right = this.deleteItem(value, node.right);
     }
 
     return node;
   }
 
-  levelOrderForEach(callback, node = this.root) {
+  deletecheck(node = this.root) {
+    if (node == null) return;
+
+    console.log(node.data);
+    this.deletecheck(node.left);
+    this.deletecheck(node.right);
+  }
+
+  levelOrderForEach(callback, node = this.root, level = 1) {
     if (node === null) {
       return;
     }
-    var queue = [];
-    queue.push(node);
-
-    while (queue.length) {
-      var current = queue.slice(0, 1);
-      if (current[0] == undefined) return;
-      callback(current[0].data);
-      if (current[0].left !== null) {
-        queue.push(current[0].left);
-      }
-      if (current[0].right !== null) {
-        queue.push(current[0].right);
-      }
-      queue.shift();
-    }
+    console.log(node.data);
+    this.levelOrderForEach(callback, node.left);
+    this.levelOrderForEach(callback, node.right);
   }
 }
 
 const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 const myTree = new Tree(arr);
-myTree.prettyPrint(myTree.root);
+// myTree.prettyPrint(myTree.root);
 // console.log(myTree.includes(1));
 // myTree.insert(6);
-// myTree.prettyPrint(myTree.root);
-myTree.deleteItem(4);
 myTree.prettyPrint(myTree.root);
-myTree.levelOrderForEach(function (data) {
-  console.log(data);
-});
+myTree.deleteItem(9);
+myTree.prettyPrint(myTree.root);
+myTree.deletecheck();
+// myTree.levelOrderForEach(function (data) {
+//   console.log(data);
+// });
