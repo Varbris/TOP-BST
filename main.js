@@ -154,21 +154,57 @@ class Tree {
     return node;
   }
 
-  deletecheck(node = this.root) {
-    if (node == null) return;
+  checkLevel(node, level = 0) {
+    if (node === null) {
+      return level;
+    }
+    level = level + 1;
 
-    console.log(node.data);
-    this.deletecheck(node.left);
-    this.deletecheck(node.right);
+    var levelLeft = this.checkLevel(node.left, level);
+    var levelRight = this.checkLevel(node.right, level);
+    if (levelLeft > levelRight) {
+      return levelLeft;
+    } else {
+      return levelRight;
+    }
   }
 
-  levelOrderForEach(callback, node = this.root, level = 1) {
+  checkLevel(node = this.root, level = 0) {
     if (node === null) {
+      return level;
+    }
+
+    level++;
+    var levelLeft = this.checkLevel(node.left, level);
+    var levelRight = this.checkLevel(node.right, level);
+    if (levelLeft > levelRight) {
+      return levelLeft;
+    } else {
+      return levelRight;
+    }
+  }
+
+  levelOrderForEach(callback, levelnode = [], node = this.root) {
+    if (levelnode.length == 0 || levelnode.length == null) {
+      levelnode.push(node);
+    }
+
+    if (levelnode[0] !== null) {
+      callback(levelnode[0].data);
+    } else {
       return;
     }
-    console.log(node.data);
-    this.levelOrderForEach(callback, node.left);
-    this.levelOrderForEach(callback, node.right);
+
+    var nextLevel = levelnode.shift();
+    if (nextLevel.left == null) {
+      levelnode.push(nextLevel.right);
+    } else if (nextLevel.right == null) {
+      levelnode.push(nextLevel.left);
+    } else {
+      levelnode.push(nextLevel.left);
+      levelnode.push(nextLevel.right);
+    }
+    this.levelOrderForEach(callback, levelnode);
   }
 }
 
@@ -181,7 +217,6 @@ const myTree = new Tree(arr);
 myTree.prettyPrint(myTree.root);
 myTree.deleteItem(9);
 myTree.prettyPrint(myTree.root);
-myTree.deletecheck();
-// myTree.levelOrderForEach(function (data) {
-//   console.log(data);
-// });
+myTree.levelOrderForEach(function (data) {
+  console.log(data);
+});
