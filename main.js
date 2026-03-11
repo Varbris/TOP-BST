@@ -154,36 +154,6 @@ class Tree {
     return node;
   }
 
-  checkLevel(node, level = 0) {
-    if (node === null) {
-      return level;
-    }
-    level = level + 1;
-
-    var levelLeft = this.checkLevel(node.left, level);
-    var levelRight = this.checkLevel(node.right, level);
-    if (levelLeft > levelRight) {
-      return levelLeft;
-    } else {
-      return levelRight;
-    }
-  }
-
-  checkLevel(node = this.root, level = 0) {
-    if (node === null) {
-      return level;
-    }
-
-    level++;
-    var levelLeft = this.checkLevel(node.left, level);
-    var levelRight = this.checkLevel(node.right, level);
-    if (levelLeft > levelRight) {
-      return levelLeft;
-    } else {
-      return levelRight;
-    }
-  }
-
   levelOrderForEach(callback, levelnode = [], node = this.root) {
     if (typeof callback !== "function") {
       throw new Error("Parameter is not a function");
@@ -252,6 +222,29 @@ class Tree {
     this.postOrderForEach(callback, node.right);
     callback(node.data);
   }
+
+  height(value, node = this.root, level = 0) {
+    if (node === null) {
+      return;
+    }
+
+    if (node.data === value) {
+      return level;
+    } else {
+      level++;
+    }
+
+    var levelLeft = this.height(value, node.left, level);
+    var levelRight = this.height(value, node.right, level);
+
+    if (levelLeft !== undefined) {
+      return levelLeft;
+    } else if (levelRight !== undefined) {
+      return levelRight;
+    } else {
+      return undefined;
+    }
+  }
 }
 
 const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -264,19 +257,21 @@ const myTree = new Tree(arr);
 // myTree.deleteItem(9);
 myTree.prettyPrint(myTree.root);
 
-try {
-  // myTree.levelOrderForEach(function (data) {
-  //   console.log(data);
-  // });
-  // myTree.inOrderForEach(function (data) {
-  //   console.log(data);
-  // });
-  // myTree.preOrderForEach(function (data) {
-  //   console.log(data);
-  // });
-  myTree.postOrderForEach(function (data) {
-    console.log(data);
-  });
-} catch (e) {
-  console.log(e);
-}
+// try {
+//   // myTree.levelOrderForEach(function (data) {
+//   //   console.log(data);
+//   // });
+//   // myTree.inOrderForEach(function (data) {
+//   //   console.log(data);
+//   // });
+//   // myTree.preOrderForEach(function (data) {
+//   //   console.log(data);
+//   // });
+//   // myTree.postOrderForEach(function (data) {
+//   //   console.log(data);
+//   // });
+// } catch (e) {
+//   console.log(e);
+// }
+
+console.log(myTree.height(12));
