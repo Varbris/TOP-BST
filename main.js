@@ -185,6 +185,10 @@ class Tree {
   }
 
   levelOrderForEach(callback, levelnode = [], node = this.root) {
+    if (typeof callback !== "function") {
+      throw new Error("Parameter is not a function");
+    }
+
     if (levelnode.length == 0 || levelnode.length == null) {
       levelnode.push(node);
     }
@@ -206,6 +210,11 @@ class Tree {
     }
     this.levelOrderForEach(callback, levelnode);
   }
+
+  inOrderForEach(callback) {}
+
+  preOrderForeach(callback) {}
+  postOrderForEach(callback) {}
 }
 
 const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -214,9 +223,14 @@ const myTree = new Tree(arr);
 // myTree.prettyPrint(myTree.root);
 // console.log(myTree.includes(1));
 // myTree.insert(6);
+// myTree.prettyPrint(myTree.root);
+// myTree.deleteItem(9);
 myTree.prettyPrint(myTree.root);
-myTree.deleteItem(9);
-myTree.prettyPrint(myTree.root);
-myTree.levelOrderForEach(function (data) {
-  console.log(data);
-});
+
+try {
+  myTree.levelOrderForEach(function (data) {
+    console.log(data);
+  });
+} catch (e) {
+  console.log(e);
+}
