@@ -239,7 +239,19 @@ class Tree {
     this.preOrderForEach(callback, node.right);
   }
 
-  postOrderForEach(callback) {}
+  postOrderForEach(callback, node = this.root) {
+    if (typeof callback !== "function") {
+      throw new Error("Parameter is not a function");
+    }
+
+    if (node === null) {
+      return;
+    }
+
+    this.postOrderForEach(callback, node.left);
+    this.postOrderForEach(callback, node.right);
+    callback(node.data);
+  }
 }
 
 const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -259,7 +271,10 @@ try {
   // myTree.inOrderForEach(function (data) {
   //   console.log(data);
   // });
-  myTree.preOrderForEach(function (data) {
+  // myTree.preOrderForEach(function (data) {
+  //   console.log(data);
+  // });
+  myTree.postOrderForEach(function (data) {
     console.log(data);
   });
 } catch (e) {
