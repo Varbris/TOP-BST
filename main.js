@@ -211,7 +211,19 @@ class Tree {
     this.levelOrderForEach(callback, levelnode);
   }
 
-  inOrderForEach(callback) {}
+  inOrderForEach(callback, node = this.root) {
+    if (typeof callback !== "function") {
+      throw new Error("Parameter is not a function");
+    }
+
+    if (node === null) {
+      return;
+    }
+
+    this.inOrderForEach(callback, node.left);
+    callback(node.data);
+    this.inOrderForEach(callback, node.right);
+  }
 
   preOrderForeach(callback) {}
   postOrderForEach(callback) {}
@@ -228,7 +240,10 @@ const myTree = new Tree(arr);
 myTree.prettyPrint(myTree.root);
 
 try {
-  myTree.levelOrderForEach(function (data) {
+  // myTree.levelOrderForEach(function (data) {
+  //   console.log(data);
+  // });
+  myTree.inOrderForEach(function (data) {
     console.log(data);
   });
 } catch (e) {
