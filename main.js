@@ -225,7 +225,20 @@ class Tree {
     this.inOrderForEach(callback, node.right);
   }
 
-  preOrderForeach(callback) {}
+  preOrderForEach(callback, node = this.root) {
+    if (typeof callback !== "function") {
+      throw new Error("Parameter is not a function");
+    }
+
+    if (node === null) {
+      return;
+    }
+
+    callback(node.data);
+    this.preOrderForEach(callback, node.left);
+    this.preOrderForEach(callback, node.right);
+  }
+
   postOrderForEach(callback) {}
 }
 
@@ -243,7 +256,10 @@ try {
   // myTree.levelOrderForEach(function (data) {
   //   console.log(data);
   // });
-  myTree.inOrderForEach(function (data) {
+  // myTree.inOrderForEach(function (data) {
+  //   console.log(data);
+  // });
+  myTree.preOrderForEach(function (data) {
     console.log(data);
   });
 } catch (e) {
