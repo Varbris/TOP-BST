@@ -245,6 +245,29 @@ class Tree {
       return undefined;
     }
   }
+
+  depth(value, node = this.root, level = 0) {
+    if (node === null) {
+      return;
+    }
+
+    if (node.data === value) {
+      return level;
+    }
+
+    var levelLeft = this.depth(value, node.left, level);
+    var levelRight = this.depth(value, node.right, level);
+
+    if (levelLeft !== undefined) {
+      levelLeft++;
+      return levelLeft;
+    } else if (levelRight !== undefined) {
+      levelRight++;
+      return levelRight;
+    } else {
+      return undefined;
+    }
+  }
 }
 
 const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -274,4 +297,6 @@ myTree.prettyPrint(myTree.root);
 //   console.log(e);
 // }
 
-console.log(myTree.height(12));
+// console.log(myTree.height(12));
+
+console.log(myTree.height(324));
