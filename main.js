@@ -8,18 +8,14 @@ class Node {
 
 class Tree {
   constructor(myArr) {
-    this.root = this.buildTree(
-      this.removeDuplicate(this.mergeSort(myArr)),
-      0,
-      myArr.length - 1
-    );
+    this.fixArr = this.removeDuplicate(this.mergeSort(myArr));
+    this.root = this.buildTree(this.fixArr, 0, this.fixArr.length - 1);
   }
 
   buildTree(arr, start, end) {
     if (start > end) return null;
 
     let mid = start + Math.floor((end - start) / 2);
-
     let root = new Node(arr[mid]);
 
     root.left = this.buildTree(arr, start, mid - 1);
@@ -275,7 +271,6 @@ class Tree {
 
       var left = dfs(node.left);
       var right = dfs(node.right);
-      console.log(left, right);
       var balanced = left[0] && right[0] && Math.abs(left[1] - right[1]) <= 1;
 
       return [balanced, 1 + Math.max(left[1], right[1])];
