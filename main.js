@@ -73,7 +73,7 @@ class Tree {
         result.push(element);
       }
     });
-    console.log(result);
+
     return result;
   }
 
@@ -284,40 +284,74 @@ class Tree {
       newArr.push(data);
     }, node);
 
-    node = this.buildTree(newArr, 0, newArr.length - 1);
+    this.root = this.buildTree(newArr, 0, newArr.length - 1);
   }
 }
 
-const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+// const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+//1.
+var arrayGenerator = function (max) {
+  var newArey = new Array();
+  for (var i = 0; i < max; i++) {
+    newArey.push(Math.floor(Math.random() * 100));
+  }
 
-const myTree = new Tree(arr);
-// myTree.prettyPrint(myTree.root);
-// console.log(myTree.includes(1));
-// myTree.insert(6);
-// myTree.prettyPrint(myTree.root);
-// myTree.deleteItem(9);
-myTree.prettyPrint(myTree.root);
+  return newArey;
+};
+var myArray = arrayGenerator(10);
+var mytree = new Tree(myArray);
 
-// try {
-//   // myTree.levelOrderForEach(function (data) {
-//   //   console.log(data);
-//   // });
-//   // myTree.inOrderForEach(function (data) {
-//   //   console.log(data);
-//   // });
-//   // myTree.preOrderForEach(function (data) {
-//   //   console.log(data);
-//   // });
-//   // myTree.postOrderForEach(function (data) {
-//   //   console.log(data);
-//   // });
-// } catch (e) {
-//   console.log(e);
-// }
+//2.
+console.log(myArray);
+mytree.prettyPrint(mytree.root);
+console.log(mytree.isBalanced());
 
-// console.log(myTree.height(12));
+//3.
+console.log("level order: ");
+mytree.levelOrderForEach(function (data) {
+  console.log(data);
+});
+console.log("pre order: ");
+mytree.preOrderForEach(function (data) {
+  console.log(data);
+});
+console.log("post order: ");
+mytree.postOrderForEach(function (data) {
+  console.log(data);
+});
+console.log("in order: ");
+mytree.inOrderForEach(function (data) {
+  console.log(data);
+});
 
-// console.log(myTree.height(324));
+//4.
+mytree.insert(101);
 
-// console.log(myTree.isBalanced());
-myTree.rebalance();
+//5.
+console.log(mytree.isBalanced());
+mytree.prettyPrint(mytree.root);
+//6.
+mytree.rebalance();
+
+//7.
+
+console.log(mytree.isBalanced());
+mytree.prettyPrint(mytree.root);
+
+//8
+console.log("level order: ");
+mytree.levelOrderForEach(function (data) {
+  console.log(data);
+});
+console.log("pre order: ");
+mytree.preOrderForEach(function (data) {
+  console.log(data);
+});
+console.log("post order: ");
+mytree.postOrderForEach(function (data) {
+  console.log(data);
+});
+console.log("in order: ");
+mytree.inOrderForEach(function (data) {
+  console.log(data);
+});
