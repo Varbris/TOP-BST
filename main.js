@@ -277,6 +277,15 @@ class Tree {
     }
     return dfs(node)[0];
   }
+
+  rebalance(node = this.root) {
+    var newArr = new Array();
+    this.inOrderForEach(function (data) {
+      newArr.push(data);
+    }, node);
+
+    node = this.buildTree(newArr, 0, newArr.length - 1);
+  }
 }
 
 const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -310,4 +319,5 @@ myTree.prettyPrint(myTree.root);
 
 // console.log(myTree.height(324));
 
-console.log(myTree.isBalanced());
+// console.log(myTree.isBalanced());
+myTree.rebalance();
